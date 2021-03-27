@@ -1,4 +1,6 @@
 import { GetStaticProps } from 'next';
+import { RichText } from 'prismic-dom';
+import Prismic from '@prismicio/client'
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -24,13 +26,39 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-// export default function Home() {
-//   // TODO
-// }
+export default function Home({ postsPagination }: HomeProps) {
+  console.log(postsPagination);
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient();
-//   // const postsResponse = await prismic.query(TODO);
+  return <h1>Home</h1>;
+}
 
-//   // TODO
-// };
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+  const postsResponse = await prismic.query(
+    [Prismic.Predicates.at('document.type', 'post')],
+    {
+      fetch: ['post.title', 'post.subtitle', 'post.author', 'post.content'],
+      pageSize: 20,
+    }
+  );
+
+  const posts = postsResponse.results.map(post => {
+    return {
+      slug: post.uid,
+      title: RichText.asText(post.data.title),
+      subtitle: RichText.asText(post.data.subtitle),
+      author: RichText.asText(post.data.author),
+      updatedAt: new Date(post.last_publication_date).toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      }),
+    }
+  });
+
+  return {
+    props: {
+      posts,
+    }
+  };
+};
