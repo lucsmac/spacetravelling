@@ -1,6 +1,5 @@
 import { GetStaticProps } from 'next';
-import { RichText } from 'prismic-dom';
-import Prismic from '@prismicio/client'
+import Prismic from '@prismicio/client';
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -26,7 +25,7 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ postsPagination }: HomeProps) {
+const Home: React.FC<HomeProps> = ({ postsPagination }) => {
   console.log(postsPagination);
 
   return <h1>Home</h1>;
@@ -42,23 +41,28 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   );
 
-  const posts = postsResponse.results.map(post => {
-    return {
-      slug: post.uid,
-      title: RichText.asText(post.data.title),
-      subtitle: RichText.asText(post.data.subtitle),
-      author: RichText.asText(post.data.author),
-      updatedAt: new Date(post.last_publication_date).toLocaleString('pt-BR', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-      }),
+  const posts = postsResponse.results.map(
+    (post): Post => {
+      return {
+        uid: post.uid,
+        first_publication_date: post.first_publication_date,
+        data: {
+          title: post.data.title,
+          subtitle: post.data.subtitle,
+          author: post.data.author,
+        },
+      };
     }
-  });
+  );
 
   return {
     props: {
-      posts,
-    }
+      postsPagination: {
+        next_page: postsResponse.next_page,
+        results: posts,
+      },
+    },
   };
 };
+
+export default Home;
