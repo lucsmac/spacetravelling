@@ -29,7 +29,7 @@ const Home: React.FC<HomeProps> = ({ postsPagination }) => {
   console.log(postsPagination);
 
   return <h1>Home</h1>;
-}
+};
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
