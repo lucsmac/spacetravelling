@@ -44,7 +44,55 @@ const Home: React.FC<HomeProps> = ({ postsPagination }) => {
             <a href="/">
               <h2>Como utilizar Hooks</h2>
               <p>Pensando em sincronização em vez de ciclos de vida.</p>
-              <div>
+              <div className={styles.infos}>
+                <span>
+                  <img src="/images/calendar.png" alt="calendar" />
+                  15 Mar 2021
+                </span>
+                <span>
+                  <img src="/images/author.png" alt="author" />
+                  Joseph Oliveira
+                </span>
+              </div>
+            </a>
+          </li>
+          <li className={styles.post}>
+            <a href="/">
+              <h2>Como utilizar Hooks</h2>
+              <p>Pensando em sincronização em vez de ciclos de vida.</p>
+              <div className={styles.infos}>
+                <span>
+                  <img src="/images/calendar.png" alt="calendar" />
+                  15 Mar 2021
+                </span>
+                <span>
+                  <img src="/images/author.png" alt="author" />
+                  Joseph Oliveira
+                </span>
+              </div>
+            </a>
+          </li>
+          <li className={styles.post}>
+            <a href="/">
+              <h2>Como utilizar Hooks</h2>
+              <p>Pensando em sincronização em vez de ciclos de vida.</p>
+              <div className={styles.infos}>
+                <span>
+                  <img src="/images/calendar.png" alt="calendar" />
+                  15 Mar 2021
+                </span>
+                <span>
+                  <img src="/images/author.png" alt="author" />
+                  Joseph Oliveira
+                </span>
+              </div>
+            </a>
+          </li>
+          <li className={styles.post}>
+            <a href="/">
+              <h2>Como utilizar Hooks</h2>
+              <p>Pensando em sincronização em vez de ciclos de vida.</p>
+              <div className={styles.infos}>
                 <span>
                   <img src="/images/calendar.png" alt="calendar" />
                   15 Mar 2021
