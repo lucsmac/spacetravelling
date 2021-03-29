@@ -20,6 +20,7 @@ import { UtterancesComments } from '../../components/UtterancesComments';
 interface Post {
   uid: string;
   first_publication_date: string | null;
+  last_publication_date: string | null;
   data: {
     title: string;
     banner: {
@@ -41,13 +42,6 @@ interface PostProps {
   postAfter: Post;
 }
 
-const formattedPostDateFull = (date: string): string => {
-  const formattedDate = format(new Date(date), 'dd MMM yyyy, kk:mm:ss', {
-    locale: ptBR,
-  });
-  return formattedDate;
-};
-
 export default function Post({
   post,
   postBefore,
@@ -60,14 +54,20 @@ export default function Post({
     return formattedDate;
   };
 
+  const formattedPostDateFull = (date: string): string => {
+    const formattedDate = format(new Date(date), "dd MMM yyyy, 'às' kk:mm", {
+      locale: ptBR,
+    });
+    return formattedDate;
+  };
+
   const router = useRouter();
 
   if (router.isFallback) {
     return <p>Carregando...</p>;
   }
 
-  console.log('postBefore: ', postBefore);
-  console.log('postAfter: ', postAfter);
+  console.log('last: ', post.last_publication_date);
 
   return (
     <>
@@ -99,6 +99,15 @@ export default function Post({
                 <img src="/images/clock.png" alt="author" /> 4 min
               </span>
             </div>
+
+            {post.last_publication_date && (
+              <span className={styles.updatedAt}>
+                <i>
+                  * editado em{' '}
+                  {formattedPostDateFull(post.last_publication_date)}
+                </i>
+              </span>
+            )}
 
             <div className={styles.content}>
               {post.data.content.map(content => {
@@ -172,9 +181,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('post', String(slug), {});
 
+  console.log(response.last_publication_date);
+
   const post = {
     uid: response.uid,
     first_publication_date: response.first_publication_date,
+    last_publication_date: response.last_publication_date,
     data: {
       title: response.data.title,
       subtitle: response.data.subtitle,
