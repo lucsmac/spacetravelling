@@ -59,7 +59,7 @@ export default function Post({ post }: PostProps): JSX.Element {
       <Header />
 
       <main>
-        <article>
+        <article className={styles.post}>
           <img
             className={styles.banner}
             src={post.data.banner.url}
@@ -85,7 +85,7 @@ export default function Post({ post }: PostProps): JSX.Element {
               {post.data.content.map(content => {
                 return (
                   <div key={content.heading}>
-                    <strong>{content?.heading}</strong>
+                    <h2>{content?.heading}</h2>
                     <div
                       dangerouslySetInnerHTML={{
                         __html: RichText.asHtml(content.body),

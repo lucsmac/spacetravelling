@@ -2,3 +2,30 @@
   max-width: 100%;
   margin-bottom: 5rem;
 }
+
+.post {
+  h1 {
+    margin-bottom: 1.75rem;
+  }
+
+  .content {
+    margin-top: 4rem;
+
+    h2 {
+      margin-bottom: 2rem;
+      color: var(--heading);
+    }
+
+    p, li {
+      color: var(--body);
+    }
+
+    p + p {
+      margin-bottom: 1rem;
+    }
+
+    a {
+      color: var(--highlight);
+    }
+  }
+}
