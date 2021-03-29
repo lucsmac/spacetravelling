@@ -82,7 +82,7 @@ const Home: React.FC<HomeProps> = ({ postsPagination }) => {
                 <a>
                   <h2>{post.data.title}</h2>
                   <p>{post.data.subtitle}</p>
-                  <div className={styles.infos}>
+                  <div className={commonStyles.infos}>
                     <span>
                       <img src="/images/calendar.png" alt="calendar" />
                       {formattedPostDate(post.first_publication_date)}

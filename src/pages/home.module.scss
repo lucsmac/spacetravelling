@@ -22,24 +22,6 @@
       margin-bottom: 1.5rem;
     }
 
-    .infos {
-      display: grid;
-      column-gap: 1.875rem;
-      justify-content: start;
-      grid-template-columns: auto auto;
-
-      span {
-        display: flex;
-        align-items: center;
-        color: var(--info);
-        font-size: 0.875rem;
-
-        img {
-          margin-right: 0.625rem;
-        }
-      }
-    }
-
     & + li {
       margin-top: 3rem;
     }
