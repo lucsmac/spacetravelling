@@ -1,10 +1,12 @@
 import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client';
+import Head from 'next/head';
 
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import Header from '../components/Header';
 
 interface Post {
   uid?: string;
@@ -28,7 +30,36 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = ({ postsPagination }) => {
   console.log(postsPagination);
 
-  return <h1>Home</h1>;
+  return (
+    <>
+      <Head>
+        <title>Home | Spacetraveling</title>
+      </Head>
+
+      <Header />
+
+      <main className={commonStyles.container}>
+        <ul className={styles.posts}>
+          <li className={styles.post}>
+            <a href="/">
+              <h2>Como utilizar Hooks</h2>
+              <p>Pensando em sincronização em vez de ciclos de vida.</p>
+              <div>
+                <span>
+                  <img src="/images/calendar.png" alt="calendar" />
+                  15 Mar 2021
+                </span>
+                <span>
+                  <img src="/images/author.png" alt="author" />
+                  Joseph Oliveira
+                </span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </main>
+    </>
+  );
 };
 
 export const getStaticProps: GetStaticProps = async () => {

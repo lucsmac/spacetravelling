@@ -1,1 +1,15 @@
-// TODO
+.posts {
+  list-style: none;
+
+  .post {
+    h2 {
+      font-size: 1.75rem;
+      line-height: 2rem;
+      margin-bottom: .5rem;
+    }
+
+    p {
+      color: var(--body);
+    }
+  }
+}
