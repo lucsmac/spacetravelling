@@ -8,6 +8,7 @@ import { ptBR } from 'date-fns/locale';
 
 import { RichText } from 'prismic-dom';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
@@ -17,6 +18,7 @@ import styles from './post.module.scss';
 import { UtterancesComments } from '../../components/UtterancesComments';
 
 interface Post {
+  uid: string;
   first_publication_date: string | null;
   data: {
     title: string;
@@ -34,10 +36,23 @@ interface Post {
 }
 
 interface PostProps {
+  postBefore: Post;
   post: Post;
+  postAfter: Post;
 }
 
-export default function Post({ post }: PostProps): JSX.Element {
+const formattedPostDateFull = (date: string): string => {
+  const formattedDate = format(new Date(date), 'dd MMM yyyy, kk:mm:ss', {
+    locale: ptBR,
+  });
+  return formattedDate;
+};
+
+export default function Post({
+  post,
+  postBefore,
+  postAfter,
+}: PostProps): JSX.Element {
   const formattedPostDate = (date: string): string => {
     const formattedDate = format(new Date(date), 'dd MMM yyyy', {
       locale: ptBR,
@@ -50,6 +65,9 @@ export default function Post({ post }: PostProps): JSX.Element {
   if (router.isFallback) {
     return <p>Carregando...</p>;
   }
+
+  console.log('postBefore: ', postBefore);
+  console.log('postAfter: ', postAfter);
 
   return (
     <>
@@ -98,6 +116,28 @@ export default function Post({ post }: PostProps): JSX.Element {
             </div>
           </div>
         </article>
+        <div className={`${styles.postsNav} ${commonStyles.container}`}>
+          {postBefore && (
+            <div className={styles.prevPost}>
+              <Link href={`/post/${postBefore.uid}`}>
+                <a>
+                  <p>{postBefore.data.title}</p>
+                  <span>Post anterior</span>
+                </a>
+              </Link>
+            </div>
+          )}
+          {postAfter && (
+            <div className={styles.nextPost}>
+              <Link href={`/post/${postAfter.uid}`}>
+                <a>
+                  <p>{postAfter.data.title}</p>
+                  <span>Próximo post</span>
+                </a>
+              </Link>
+            </div>
+          )}
+        </div>
         <UtterancesComments />
       </main>
     </>
@@ -157,9 +197,41 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   };
 
+  const postsResponseBefore = await prismic.query(
+    [
+      Prismic.Predicates.dateBefore(
+        'document.first_publication_date',
+        post.first_publication_date
+      ),
+    ],
+    {
+      fetch: ['post.title', 'post.subtitle', 'post.author', 'post.content'],
+      pageSize: 2,
+    }
+  );
+
+  const postBefore = postsResponseBefore.results[0] ?? null;
+
+  const postsResponseAfter = await prismic.query(
+    [
+      Prismic.Predicates.dateAfter(
+        'document.first_publication_date',
+        post.first_publication_date
+      ),
+    ],
+    {
+      fetch: ['post.title', 'post.subtitle', 'post.author', 'post.content'],
+      pageSize: 2,
+    }
+  );
+
+  const postAfter = postsResponseAfter.results[0] ?? null;
+
   return {
     props: {
+      postBefore,
       post,
+      postAfter,
     },
     redirect: 60 * 30,
   };

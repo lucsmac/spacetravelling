@@ -35,3 +35,44 @@
     }
   }
 }
+
+.postsNav {
+  display: grid;
+  grid-template-areas:
+    'prev next';
+
+  max-width: calc(700px - 4rem);
+  padding: 3rem 0;
+  border-top: 1px solid #D7D7D710;
+
+  .prevPost {
+    grid-area: prev;
+  }
+
+  .nextPost {
+    grid-area: next;
+    justify-self: end;
+
+    a {
+      align-items: flex-end;
+      text-align: end;
+    }
+  }
+
+  a {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+
+    p {
+      font-size: 1.125rem;
+      color: var(--heading);
+      margin-bottom: .5rem;
+    }
+
+    span {
+      font-weight: bold;
+      color: var(--highlight);
+    }
+  }
+}
