@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale'
+import { ptBR } from 'date-fns/locale';
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -32,8 +32,6 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ postsPagination }) => {
-  console.log(postsPagination);
-
   const formattedPostDate = (date: string): string => {
     const formattedDate = format(new Date(date), 'dd MMM yyyy', {
       locale: ptBR,
