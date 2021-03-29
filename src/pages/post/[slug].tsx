@@ -14,6 +14,7 @@ import { getPrismicClient } from '../../services/prismic';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
+import { UtterancesComments } from '../../components/UtterancesComments';
 
 interface Post {
   first_publication_date: string | null;
@@ -58,7 +59,7 @@ export default function Post({ post }: PostProps): JSX.Element {
 
       <Header />
 
-      <main>
+      <main className={styles.postContainer}>
         <article className={styles.post}>
           <img
             className={styles.banner}
@@ -97,6 +98,7 @@ export default function Post({ post }: PostProps): JSX.Element {
             </div>
           </div>
         </article>
+        <UtterancesComments />
       </main>
     </>
   );
