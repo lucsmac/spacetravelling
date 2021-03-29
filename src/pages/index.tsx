@@ -3,6 +3,9 @@ import Prismic from '@prismicio/client';
 import Head from 'next/head';
 import Link from 'next/link';
 
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale'
+
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -31,6 +34,13 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = ({ postsPagination }) => {
   console.log(postsPagination);
 
+  const formattedPostDate = (date: string): string => {
+    const formattedDate = format(new Date(date), 'dd MMM yyyy', {
+      locale: ptBR,
+    });
+    return formattedDate;
+  };
+
   return (
     <>
       <Head>
@@ -41,25 +51,31 @@ const Home: React.FC<HomeProps> = ({ postsPagination }) => {
 
       <main className={commonStyles.container}>
         <ul className={styles.posts}>
-          <li className={styles.post}>
-            <Link href="/">
-              <a>
-                <h2>Como utilizar Hooks</h2>
-                <p>Pensando em sincronização em vez de ciclos de vida.</p>
-                <div className={styles.infos}>
-                  <span>
-                    <img src="/images/calendar.png" alt="calendar" />
-                    15 Mar 2021
-                  </span>
-                  <span>
-                    <img src="/images/author.png" alt="author" />
-                    Joseph Oliveira
-                  </span>
-                </div>
-              </a>
-            </Link>
-          </li>
+          {postsPagination.results.map(post => (
+            <li key={post.uid} className={styles.post}>
+              <Link href={post.uid}>
+                <a>
+                  <h2>{post.data.title}</h2>
+                  <p>{post.data.subtitle}</p>
+                  <div className={styles.infos}>
+                    <span>
+                      <img src="/images/calendar.png" alt="calendar" />
+                      {formattedPostDate(post.first_publication_date)}
+                    </span>
+                    <span>
+                      <img src="/images/author.png" alt="author" />
+                      {post.data.author}
+                    </span>
+                  </div>
+                </a>
+              </Link>
+            </li>
+          ))}
         </ul>
+
+        {postsPagination.next_page && (
+          <span className={styles.loadMore}>Carregar mais posts</span>
+        )}
       </main>
     </>
   );
